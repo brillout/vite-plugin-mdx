@@ -19,13 +19,24 @@ export async function transformMdx({
 }): Promise<string> {
   const jsx = await mdx(code, mdxOpts)
   const esBuild = await ensureEsbuildService()
-  const { code: esbuildOut } = await esBuild.transform(jsx, {
+
+  // type TransformOptions = Pick<Parameters<typeof esBuild.transform>, 1>[1];
+  // let t: TransformOptions;
+
+  let { code: esbuildOut } = await esBuild.transform(jsx, {
     loader: 'jsx',
-    target: 'es2019',
     jsxFactory: 'mdx',
+    target: 'es2019',
   })
 
+  esbuildOut = esbuildOut.replace('export default function MDXContent', 'export default MDXContent; function MDXContent');
+
+  // console.log('esbuildOut', esbuildOut);
+
   const withoutHMR = `${DEFAULT_RENDERER}\n${esbuildOut}`
+
+  return withoutHMR;
+  /*
 
   if (!forHMR) {
     // don't need HMR ability
@@ -36,6 +47,7 @@ export async function transformMdx({
     throw new Error(`path should be given when transforming for HMR.`)
   }
   return applyHMR(withoutHMR, id)
+  */
 }
 
 let _service: Promise<Service> | undefined
