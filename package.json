@@ -1,32 +1,14 @@
 {
-  "name": "vite-plugin-mdx",
-  "version": "2.0.1",
-  "description": "Vite plugin for MDX",
+  "name": "@brillout/vite-plugin-mdx",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "rm -rf dist/ && tsc"
+  },
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
-  "scripts": {
-    "dev": "tsc -w -p .",
-    "build": "rm -rf dist && tsc -p .",
-    "prepare": "npm run build"
-  },
-  "keywords": [
-    "vite",
-    "react",
-    "mdx",
-    "hmr"
-  ],
-  "author": "csr632",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/csr632/vite-plugin-react-pages.git"
-  },
-  "bugs": {
-    "url": "https://github.com/csr632/vite-plugin-react-pages/issues"
-  },
-  "homepage": "https://github.com/csr632/vite-plugin-react-pages",
   "peerDependencies": {
     "react": "*",
     "vite": "*"
@@ -44,5 +26,15 @@
     "@types/node": "^14.14.22",
     "esbuild": "^0.8.31",
     "typescript": "^4.1.3"
+  },
+  "description": "Vite plugin for MDX",
+  "license": "MIT",
+  "repository": "https://github.com/brillout/vite-plugin-mdx.git",
+  "keywords": [
+    "vite",
+    "mdx"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
