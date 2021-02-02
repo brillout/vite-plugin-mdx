@@ -79,6 +79,7 @@ function applyHMR(code: string, id: string): string {
 
   const runtimePublicPath = '/@react-refresh'
 
+  /*
   const header = `
 import RefreshRuntime from "${runtimePublicPath}";
 
@@ -116,6 +117,8 @@ if (!window.__vite_plugin_react_timeout) {
 }`
 
   return `${header}${result.code}${footer}`
+  */
+  return result.code
 }
 
 /**
