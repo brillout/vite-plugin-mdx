@@ -1,6 +1,6 @@
 {
   "name": "@brillout/vite-plugin-mdx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "dev": "tsc --watch",
     "build": "rm -rf dist/ && tsc"
