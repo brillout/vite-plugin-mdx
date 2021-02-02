@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import remarkFrontmatter from 'remark-frontmatter'
+import * as remarkFrontmatter from 'remark-frontmatter'
 import { stopService, transformMdx } from './transform'
 
 export function cleanCreatePlugin(mdxOpts?: any): Plugin {
