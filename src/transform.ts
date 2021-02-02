@@ -1,7 +1,7 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
 // const mdxReact = require.resolve('@mdx-js/react');
-const mdxReact = '@mdx-js/react';
+const mdxReact = '@mdx-js/react'
 
 const DEFAULT_RENDERER = `
 import React from 'react'
@@ -12,7 +12,7 @@ export async function transformMdx({
   code,
   mdxOpts,
   forHMR,
-  id,
+  id
 }: {
   code: string
   mdxOpts?: any
@@ -28,16 +28,19 @@ export async function transformMdx({
   let { code: esbuildOut } = await esBuild.transform(jsx, {
     loader: 'jsx',
     jsxFactory: 'mdx',
-    target: 'es2019',
+    target: 'es2019'
   })
 
-  esbuildOut = esbuildOut.replace('export default function MDXContent', 'export default MDXContent; function MDXContent');
+  esbuildOut = esbuildOut.replace(
+    'export default function MDXContent',
+    'export default MDXContent; function MDXContent'
+  )
 
   // console.log('esbuildOut', esbuildOut);
 
   const withoutHMR = `${DEFAULT_RENDERER}\n${esbuildOut}`
 
-  return withoutHMR;
+  return withoutHMR
   /*
 
   if (!forHMR) {
@@ -79,11 +82,11 @@ function applyHMR(code: string, id: string): string {
   const result = transformSync(code, {
     plugins: [
       require('@babel/plugin-syntax-import-meta'),
-      [require('react-refresh/babel'), { skipEnvCheck: true }],
+      [require('react-refresh/babel'), { skipEnvCheck: true }]
     ],
     ast: true,
     sourceMaps: true,
-    sourceFileName: id,
+    sourceFileName: id
   })
 
   if (!/\$RefreshReg\$\(/.test(result.code)) {
