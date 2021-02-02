@@ -1,6 +1,7 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
-const mdxReact = require.resolve('@mdx-js/react');
+// const mdxReact = require.resolve('@mdx-js/react');
+const mdxReact = '@mdx-js/react';
 
 const DEFAULT_RENDERER = `
 import React from 'react'

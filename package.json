@@ -10,6 +10,7 @@
     "dist"
   ],
   "peerDependencies": {
+    "@mdx-js/react": "*",
     "react": "*",
     "vite": "*"
   },
