@@ -1,5 +1,11 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
+
+/*
+//@ts-ignore
+import { mdx as mdxReact } from '@mdx-js/react'
+console.log('remove-me', mdxReact.length);
+*/
 // const mdxReact = require.resolve('@mdx-js/react');
 const mdxReact = '@mdx-js/react'
 
@@ -22,8 +28,12 @@ export async function transformMdx({
   const jsx = await mdx(code, mdxOpts)
   const esBuild = await ensureEsbuildService()
 
-  // type TransformOptions = Pick<Parameters<typeof esBuild.transform>, 1>[1];
-  // let t: TransformOptions;
+  /*
+  type TransformOptions = Pick<Parameters<typeof esBuild.transform>, 1>[1];
+  let t: TransformOptions;
+  t!.format
+  t!.jsxFactory
+  */
 
   let { code: esbuildOut } = await esBuild.transform(jsx, {
     loader: 'jsx',
