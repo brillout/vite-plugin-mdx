@@ -1,6 +1,6 @@
 {
   "name": "@brillout/vite-plugin-mdx",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "scripts": {
     "// User Scripts": "",
     "dev": "npm run clean:all && npm run install:dev && npm run dev:start",
