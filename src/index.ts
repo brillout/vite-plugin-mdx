@@ -3,25 +3,17 @@ import * as remarkFrontmatter from 'remark-frontmatter'
 import { stopService, transformMdx } from './transform'
 
 export function cleanCreatePlugin(mdxOpts?: any): Plugin {
-  let shouldApplyHMR = true
-
   return {
     name: 'vite-plugin-mdx',
-    configResolved(config) {
-      if (config.command === 'build' || config.isProduction) {
-        shouldApplyHMR = false
-      }
-    },
     transform(code: string, id: string) {
       if (!/\.mdx?$/.test(id)) {
         return
       }
-
-      return transformMdx({ code, mdxOpts, forHMR: shouldApplyHMR, id })
+      return transformMdx({ code, mdxOpts })
     },
     async closeBundle() {
       await stopService()
-    },
+    }
   }
 }
 
