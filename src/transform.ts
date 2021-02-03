@@ -1,21 +1,6 @@
 import { startService, Service } from 'esbuild'
+import { join as pathJoin } from 'path';
 import mdx from '@mdx-js/mdx'
-
-/*
-//@ts-ignore
-import { mdx as mdxReact } from '@mdx-js/react'
-console.log('remove-me', mdxReact.length);
-*/
-
-function getImportCode(ssr: boolean): string {
-  const mdxReact__node = require.resolve('@mdx-js/react')
-  const mdxReact__browser = '@mdx-js/react'
-  const mdxReact = ssr ? mdxReact__node : mdxReact__browser
-  return `
-  import React from 'react'
-  import { mdx } from '${mdxReact}'
-  `
-}
 
 export async function transformMdx({
   code,
@@ -29,12 +14,12 @@ export async function transformMdx({
   const jsx = await mdx(code, mdxOpts)
   const esBuild = await ensureEsbuildService()
 
-  /*
+  /* Uncomment to inspect TransformOptions
   type TransformOptions = Pick<Parameters<typeof esBuild.transform>, 1>[1];
   let t: TransformOptions;
   t!.format
   t!.jsxFactory
-  */
+  //*/
 
   let { code: codeEsbuild } = await esBuild.transform(jsx, {
     loader: 'jsx',
@@ -42,16 +27,35 @@ export async function transformMdx({
     target: 'es2019'
   })
 
+  // TODO stabelize this hotfix
   codeEsbuild = codeEsbuild.replace(
     'export default function MDXContent',
     'export default MDXContent; function MDXContent'
-  )
+  );
 
-  // console.log('codeEsbuild', codeEsbuild);
-
-  const codeTransformed = `${getImportCode(ssr)}\n${codeEsbuild}`
+  const codeTransformed = [
+    `import React from 'react'`,
+    `import { mdx } from '${getMdxReactImportPath(ssr)}'`,
+    '',
+    codeEsbuild
+  ].join('\n');
 
   return codeTransformed
+}
+
+function getMdxReactImportPath(ssr: boolean): string {
+  if( !ssr ) {
+    return '@mdx-js/react';
+  } else {
+    return resolveEsmEntry('@mdx-js/react');
+  }
+}
+
+function resolveEsmEntry(moduleName: string): string {
+  const packageJson = require(pathJoin(moduleName, 'package.json'));
+  const {module: esmPath} = packageJson;
+  const esmEntry = require.resolve(pathJoin(moduleName, esmPath));
+  return esmEntry;
 }
 
 let _service: Promise<Service> | undefined
