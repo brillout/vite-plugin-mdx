@@ -5,11 +5,11 @@ import { stopService, transformMdx } from './transform'
 export function cleanCreatePlugin(mdxOpts?: any): Plugin {
   return {
     name: 'vite-plugin-mdx',
-    transform(code: string, id: string) {
+    transform(code: string, id: string, ssr?: boolean) {
       if (!/\.mdx?$/.test(id)) {
         return
       }
-      return transformMdx({ code, mdxOpts })
+      return transformMdx({ code, mdxOpts, ssr })
     },
     async closeBundle() {
       await stopService()

@@ -6,20 +6,25 @@ import mdx from '@mdx-js/mdx'
 import { mdx as mdxReact } from '@mdx-js/react'
 console.log('remove-me', mdxReact.length);
 */
-// const mdxReact = require.resolve('@mdx-js/react');
-const mdxReact = '@mdx-js/react'
 
-const DEFAULT_RENDERER = `
-import React from 'react'
-import { mdx } from '${mdxReact}'
-`
+function getImportCode(ssr: boolean): string {
+  const mdxReact__node = require.resolve('@mdx-js/react')
+  const mdxReact__browser = '@mdx-js/react'
+  const mdxReact = ssr ? mdxReact__node : mdxReact__browser
+  return `
+  import React from 'react'
+  import { mdx } from '${mdxReact}'
+  `
+}
 
 export async function transformMdx({
   code,
-  mdxOpts
+  mdxOpts,
+  ssr = false
 }: {
   code: string
   mdxOpts?: any
+  ssr?: boolean
 }): Promise<string> {
   const jsx = await mdx(code, mdxOpts)
   const esBuild = await ensureEsbuildService()
@@ -44,7 +49,7 @@ export async function transformMdx({
 
   // console.log('codeEsbuild', codeEsbuild);
 
-  const codeTransformed = `${DEFAULT_RENDERER}\n${codeEsbuild}`
+  const codeTransformed = `${getImportCode(ssr)}\n${codeEsbuild}`
 
   return codeTransformed
 }
