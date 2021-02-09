@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "npm install && npm run prepare:vite-plugin-mdx && npm run dev",
+    "start": "yarn prepare:vite-plugin-mdx && yarn install && yarn dev",
     "dev": "vite",
-    "prepare:vite-plugin-mdx": "cd ../../ && npm run build"
+    "prepare:vite-plugin-mdx": "cd ../../ && yarn build"
   },
   "dependencies": {
     "@brillout/vite-plugin-mdx": "file:../../",
