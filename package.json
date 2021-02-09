@@ -9,7 +9,7 @@
     "tsc:watch": "tsc --build --watch",
     "tsc:once": "tsc --build",
     "// Release": "",
-    "release": "yarn clean && yarn tsc:once && npm publish",
+    "release": "yarn clean && yarn install && yarn tsc:once && npm publish",
     "// Remove caches": "",
     "clean": "git clean -Xdff"
   },
