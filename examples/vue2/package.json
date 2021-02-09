@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "npm install && npm run prepare:vite-plugin-mdx && npm run dev",
+    "dev": "vite",
+    "prepare:vite-plugin-mdx": "cd ../../ && npm run build"
+  },
+  "dependencies": {
+    "@brillout/vite-plugin-mdx": "file:../../",
+    "vite": "^2.0.0-beta.65",
+    "vite-plugin-vue2": "^1.2.0",
+    "vue": "^2.6.12"
+  }
+}

@@ -30,8 +30,9 @@
     "vite": "*"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/mdx": "^2.0.0-next.8",
     "@mdx-js/react": "^1.6.22",
+    "@mdx-js/vue": "^2.0.0-next.8",
     "esbuild": "^0.8.31",
     "remark-frontmatter": "^2.0.0"
   },
