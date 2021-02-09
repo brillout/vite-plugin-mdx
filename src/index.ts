@@ -1,8 +1,11 @@
 import { Plugin } from 'vite'
 import * as remarkFrontmatter from 'remark-frontmatter'
 import { stopService, transform } from './transform'
+import { verifyPeerDependencies } from './verifyPeerDependencies'
 
 export default createPlugin
+
+verifyPeerDependencies()
 
 function createPlugin(mdxOptions?: any): Plugin {
   mdxOptions = mdxOptions || {}
