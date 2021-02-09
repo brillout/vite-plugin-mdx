@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "npm run install:all && vite",
-    "install:all": "npm run install && npm run install:vite-plugin-mdx",
-    "install:vite-plugin-mdx": "cd ../../ && npm run install"
+    "start": "npm install && npm run prepare:vite-plugin-mdx && npm run dev",
+    "dev": "vite",
+    "prepare:vite-plugin-mdx": "cd ../../ && npm run build"
   },
   "dependencies": {
     "@brillout/vite-plugin-mdx": "file:../../",

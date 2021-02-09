@@ -1,27 +1,24 @@
-import type { Plugin } from 'vite'
+import { Plugin } from 'vite'
 import * as remarkFrontmatter from 'remark-frontmatter'
-import { stopService, transformMdx } from './transform'
+import { stopService, transform } from './transform'
 
-export function cleanCreatePlugin(mdxOpts?: any): Plugin {
+export default createPlugin
+
+function createPlugin(mdxOptions?: any): Plugin {
+  mdxOptions = mdxOptions || {}
+  mdxOptions.remarkPlugins = mdxOptions.remarkPlugins || []
+  mdxOptions.remarkPlugins.unshift(remarkFrontmatter)
+
   return {
     name: 'vite-plugin-mdx',
-    transform(code: string, id: string, ssr?: boolean) {
+    transform(code_mdx: string, id: string, ssr?: boolean) {
       if (!/\.mdx?$/.test(id)) {
         return
       }
-      return transformMdx({ code, mdxOpts, ssr })
+      return transform({ code_mdx, mdxOptions, ssr })
     },
     async closeBundle() {
       await stopService()
     }
   }
 }
-
-export default function createPlugin(_mdxOpts?: any) {
-  let remarkPlugins: any[] = _mdxOpts?.remarkPlugins ?? []
-  // support frontmatter by default
-  remarkPlugins = [remarkFrontmatter, ...remarkPlugins]
-  return cleanCreatePlugin({ ..._mdxOpts, remarkPlugins })
-}
-
-export { transformMdx }
