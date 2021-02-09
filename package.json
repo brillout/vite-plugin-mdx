@@ -11,7 +11,7 @@
     "// Release": "",
     "release": "yarn clean && yarn tsc:once && npm publish",
     "// Remove caches": "",
-    "clean": "git clean -Xdf"
+    "clean": "git clean -Xdff"
   },
   "main": "dist/index.js",
   "files": [
