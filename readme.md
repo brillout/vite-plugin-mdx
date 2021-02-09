@@ -69,4 +69,4 @@ That's it.
 
 ### Example
 
-[/examples/react/](/examples/react/)
+[/examples/react/](/examples/react/).
