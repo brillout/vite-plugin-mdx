@@ -65,8 +65,6 @@ Features:
    }
    ```
 
-That's it.
-
 ### Example
 
 [/examples/react/](/examples/react/).
