@@ -4,10 +4,12 @@ Vite plugin to use MDX for your Vite app.
 
 Features:
 
-- Out-of-the-box SSR support.
 - Works with MDX v1 as well as MDX v2.
 - Works with React.
 - Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
+- HMR support.
+- SSR support.
+- Frontmatter support (with [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter)).
 
 ### Getting Started
 
