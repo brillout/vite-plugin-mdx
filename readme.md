@@ -1,13 +1,13 @@
 # Vite Plugin MDX
 
-Vite plugin to use MDX with your Vite app.
+Vite plugin to use MDX for your Vite app.
 
 Features:
 
 - Out-of-the-box SSR support.
-- Works with MDX v1 as well as MDX v2
-- Works with React
-- Works with Vue [**WIP**](https://github.com/brillout/vite-plugin-mdx/issues/3)
+- Works with MDX v1 as well as MDX v2.
+- Works with React.
+- Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
 
 ### Getting Started
 
@@ -33,7 +33,7 @@ Features:
 
 3. You can now write `.mdx` files.
 
-   ```mdx
+   ```mdx-js
    // hello.mdx
 
    import { Counter } from './Counter.jsx'
@@ -62,6 +62,8 @@ Features:
      )
    }
    ```
+
+That's it.
 
 ### Example
 
