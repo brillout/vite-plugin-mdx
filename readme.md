@@ -21,6 +21,8 @@ Features:
     npm install @mdx-js/react
    ```
 
+   You can install MDX v1 as well as MDX v2; `@brillout/vite-plugin-mdx` works with both.
+
 2. Add the plugin to your `vite.config.js`.
 
    ```js
