@@ -1,10 +1,10 @@
-Example of using [MDX](https://mdxjs.com/) with Peact.
+# Example of using [MDX](https://mdxjs.com/) with Preact
 
 To run it:
 
 ```sh
 git clone git@github.com:brillout/vite-plugin-mdx
-cd vite-plugin-mdx/examples/Preact/
+cd vite-plugin-mdx/examples/preact/
 yarn start
 ```
 
