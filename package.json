@@ -19,13 +19,13 @@
   ],
   "peerDependencies": {
     "@mdx-js/mdx": "*",
-    "@mdx-js/react": "*",
-    "react": "*",
     "vite": "*"
   },
   "dependencies": {
     "esbuild": "^0.8.31",
-    "remark-frontmatter": "^2.0.0"
+    "remark-frontmatter": "^2.0.0",
+    "@mdx-js/preact": "1.6.22",
+    "preact": "10.5.12"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^1.6.22",
