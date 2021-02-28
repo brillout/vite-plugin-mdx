@@ -1,0 +1,9 @@
+body > * {
+  width: 600px;
+  margin: auto;
+}
+code {
+  border-radius: 3px;
+  padding: 1px 3px;
+  background: #eaeaea;
+}

@@ -15,10 +15,45 @@ async function transform({
   mdxOptions?: any
   ssr?: boolean
 }): Promise<string> {
-  const code_jsx = await mdxToJsx(code_mdx, mdxOptions)
-  const code_es2019 = await jsxToES2019(code_jsx)
-  const code_final = injectImports(code_es2019, ssr)
+  const preactInstalled = isPreactInstalled()
+  const reactInstalled = isReactInstalled()
+  let code_final = ''
+  if (!preactInstalled && !reactInstalled) {
+    const errorMessage = `Neither Preact Or React are installed. 
+    You must have one of these libraries installed to use this plugin.`
+    console.error(errorMessage)
+  } else {
+    const code_jsx = await mdxToJsx(code_mdx, mdxOptions)
+    const code_es2019 = await jsxToES2019(code_jsx)
+    code_final = injectImports(
+      code_es2019,
+      ssr,
+      preactInstalled,
+      reactInstalled
+    )
+  }
   return code_final
+}
+
+function isPreactInstalled(): boolean {
+  let preactInstalled
+  try {
+    require('preact')
+    preactInstalled = true
+  } catch (err) {
+    preactInstalled = false
+  }
+  return preactInstalled
+}
+function isReactInstalled(): boolean {
+  let reactInstalled
+  try {
+    require('react')
+    reactInstalled = true
+  } catch (err) {
+    reactInstalled = false
+  }
+  return reactInstalled
 }
 
 async function mdxToJsx(code_mdx: string, mdxOptions: any) {
@@ -55,22 +90,48 @@ async function jsxToES2019(code_jsx: string) {
   return code_es2019
 }
 
-function injectImports(code_es2019: string, ssr: boolean) {
-  const code_withImports = [
-    `import React from 'react'`,
-    `import { mdx } from '${getMdxReactImportPath(ssr)}'`,
-    '',
-    code_es2019
-  ].join('\n')
+function injectImports(
+  code_es2019: string,
+  ssr: boolean,
+  preactInstalled: boolean,
+  reactInstalled: boolean
+) {
+  let code_withImports = ''
+  if (preactInstalled) {
+    code_withImports = [
+      `import {h} from 'preact'`,
+      `import { mdx } from '${getMdxImportPath(ssr, 'preact')}'`,
+      '',
+      code_es2019
+    ].join('\n')
+  } else if (reactInstalled) {
+    code_withImports = [
+      `import React from 'react'`,
+      `import { mdx } from '${getMdxImportPath(ssr, 'react')}'`,
+      '',
+      code_es2019
+    ].join('\n')
+  }
 
   return code_withImports
 }
-function getMdxReactImportPath(ssr: boolean): string {
-  if (!ssr) {
-    return '@mdx-js/react'
-  } else {
-    return resolveEsmEntry('@mdx-js/react')
+function getMdxImportPath(ssr: boolean, typeOfJSX: string): string {
+  let importToReturn = ''
+  switch (typeOfJSX) {
+    case 'react':
+      if (!ssr) {
+        importToReturn = '@mdx-js/react'
+      } else {
+        importToReturn = resolveEsmEntry('@mdx-js/react')
+      }
+    case 'preact':
+      if (!ssr) {
+        importToReturn = '@mdx-js/preact'
+      } else {
+        importToReturn = resolveEsmEntry('@mdx-js/preact')
+      }
   }
+  return importToReturn
 }
 
 function resolveEsmEntry(moduleName: string): string {

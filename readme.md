@@ -6,6 +6,7 @@ Features:
 
 - Works with MDX v1 as well as MDX v2.
 - Works with React.
+- Works with Preact.
 - Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
 - HMR support.
 - SSR support.
@@ -18,7 +19,6 @@ Features:
    ```sh
     npm install @brillout/vite-plugin-mdx
     npm install @mdx-js/mdx
-    npm install @mdx-js/react
    ```
 
    You can install MDX v1 as well as MDX v2; `@brillout/vite-plugin-mdx` works with both.
@@ -67,6 +67,7 @@ Features:
    }
    ```
 
-### Example
+### Examples
 
-[/examples/react/](/examples/react/).
+- [React example](/examples/react/).
+- [Preact example](/examples/preact/).

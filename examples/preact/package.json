@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "start": "yarn build:vite-plugin-mdx && yarn install && yarn dev",
+    "dev": "vite",
+    "build:vite-plugin-mdx": "cd ../../ && yarn build"
+  },
+  "dependencies": {
+    "@brillout/vite-plugin-mdx": "file:../../",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/preact": "^1.6.22",
+    "preact": "^10.5.12",
+    "@prefresh/vite": "^2.1.0",
+    "vite": "^2.0.0-beta.65"
+  }
+}
