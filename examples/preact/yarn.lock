@@ -341,10 +341,7 @@
 "@brillout/vite-plugin-mdx@file:../..":
   version "0.1.4"
   dependencies:
-    "@mdx-js/preact" "1.6.22"
     esbuild "^0.8.31"
-    preact "10.5.12"
-    remark-frontmatter "^2.0.0"
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"
@@ -371,7 +368,7 @@
     unist-builder "2.0.3"
     unist-util-visit "2.0.3"
 
-"@mdx-js/preact@1.6.22", "@mdx-js/preact@^1.6.22":
+"@mdx-js/preact@^1.6.22":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/preact/-/preact-1.6.22.tgz#98b9f5f865eb44d768ffea93497f7cb0c1e5f463"
   integrity sha512-ZVq6uvfVGSAphYNuD+9MVcoRSF8yi6RlZIQDVIkgc3ZnUwqYdLheCkPZ+nIG1Mil8Kanah5tgPHLNmA7HwfGLw==
@@ -593,18 +590,6 @@ extend@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
-
-fault@^1.0.1:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/fault/-/fault-1.0.4.tgz#eafcfc0a6d214fc94601e170df29954a4f842f13"
-  integrity sha512-CJ0HCB5tL5fYTEA7ToAq5+kTwd++Borf1/bifxd9iT70QcXr4MRrO3Llf8Ifs70q+SJcGHFtnIE/Nw6giCtECA==
-  dependencies:
-    format "^0.2.0"
-
-format@^0.2.0:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
-  integrity sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=
 
 fsevents@~2.3.1:
   version "2.3.2"
@@ -892,7 +877,7 @@ postcss@^8.2.1:
     nanoid "^3.1.20"
     source-map "^0.6.1"
 
-preact@10.5.12, preact@^10.5.12:
+preact@^10.5.12:
   version "10.5.12"
   resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.12.tgz#6a8ee8bf40a695c505df9abebacd924e4dd37704"
   integrity sha512-r6siDkuD36oszwlCkcqDJCAKBQxGoeEGytw2DGMD5A/GGdu5Tymw+N2OBXwvOLxg6d1FeY8MgMV3cc5aVQo4Cg==
@@ -908,13 +893,6 @@ remark-footnotes@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/remark-footnotes/-/remark-footnotes-2.0.0.tgz#9001c4c2ffebba55695d2dd80ffb8b82f7e6303f"
   integrity sha512-3Clt8ZMH75Ayjp9q4CorNeyjwIxHFcTkaektplKGl2A1jNGEUey8cKL0ZC5vJwfcD5GFGsNLImLG/NGzWIzoMQ==
-
-remark-frontmatter@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/remark-frontmatter/-/remark-frontmatter-2.0.0.tgz#c9b8539c27cd23b1672c7e0fcbd5795eeedb4dc1"
-  integrity sha512-uNOQt4tO14qBFWXenF0MLC4cqo3dv8qiHPGyjCl1rwOT0LomSHpcElbjjVh5CwzElInB38HD8aSRVugKQjeyHA==
-  dependencies:
-    fault "^1.0.1"
 
 remark-mdx@1.6.22:
   version "1.6.22"

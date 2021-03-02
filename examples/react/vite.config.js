@@ -1,6 +1,6 @@
-import reactRefresh from "@vitejs/plugin-react-refresh";
-import mdx from "@brillout/vite-plugin-mdx";
+import reactRefresh from '@vitejs/plugin-react-refresh'
+import mdx from '@brillout/vite-plugin-mdx'
 
 export default {
-  plugins: [reactRefresh(), mdx()],
-};
+  plugins: [reactRefresh(), mdx()]
+}
