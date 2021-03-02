@@ -11,11 +11,11 @@ Features:
 - SSR support.
 - Plugin support, such as [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter).
 
-### Getting Started
+## Getting Started
 
 1. Install:
 
-   1. Vite Plugin
+   1. Vite Plugin:
       ```sh
        npm install @brillout/vite-plugin-mdx
       ```
@@ -43,7 +43,7 @@ Features:
 
    import mdx from '@brillout/vite-plugin-mdx'
 
-   // `options` is passed to `@mdx-js/mdx`
+   // `options` are passed to `@mdx-js/mdx`
    const options = {
      // See https://mdxjs.com/advanced/plugins
      remarkPlugins: [
@@ -89,7 +89,7 @@ Features:
    }
    ```
 
-### Examples
+## Examples
 
 - [React example](/examples/react/).
 - [Preact example](/examples/preact/).
