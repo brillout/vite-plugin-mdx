@@ -4,24 +4,37 @@ Vite plugin to use MDX for your Vite app.
 
 Features:
 
-- Works with MDX v1 as well as MDX v2.
-- Works with React.
-- Works with Preact.
+- Works with MDX v1 and MDX v2.
+- Works with React and Preact.
 - Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
 - HMR support.
 - SSR support.
-- Frontmatter support (with [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter)).
+- Plugin support, such as [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter).
 
 ### Getting Started
 
-1. Install `@brillout/vite-plugin-mdx` as well as MDX.
+1. Install:
 
-   ```sh
-    npm install @brillout/vite-plugin-mdx
-    npm install @mdx-js/mdx
-   ```
-
-   You can install MDX v1 as well as MDX v2; `@brillout/vite-plugin-mdx` works with both.
+   1. Vite Plugin
+      ```sh
+       npm install @brillout/vite-plugin-mdx
+      ```
+   2. MDX v1:
+      ```sh
+      npm install @mdx-js/mdx
+      ```
+      Or MDX v2:
+      ```sh
+      npm install @mdx-js/mdx@next
+      ```
+   3. MDX React:
+      ```sh
+      npm install @mdx-js/react
+      ```
+      Or MDX Preact:
+      ```sh
+      npm install @mdx-js/preact
+      ```
 
 2. Add the plugin to your `vite.config.js`.
 
@@ -30,8 +43,17 @@ Features:
 
    import mdx from '@brillout/vite-plugin-mdx'
 
+   // `options` is passed to `@mdx-js/mdx`
+   const options = {
+     // See https://mdxjs.com/advanced/plugins
+     remarkPlugins: [
+       // E.g. `remark-frontmatter`
+     ],
+     rehypePlugins: [],
+   }
+
    export default {
-     plugins: [mdx()]
+     plugins: [mdx(options)]
    }
    ```
 
