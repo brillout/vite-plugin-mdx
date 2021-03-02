@@ -1,6 +1,6 @@
 # Vite Plugin MDX
 
-Vite plugin to use MDX for your Vite app.
+Vite plugin to use MDX with your Vite app.
 
 Features:
 
