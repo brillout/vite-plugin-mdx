@@ -1,6 +1,6 @@
 {
   "name": "@brillout/vite-plugin-mdx",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "scripts": {
     "// User Scripts": "",
     "dev": "yarn tsc:watch",
