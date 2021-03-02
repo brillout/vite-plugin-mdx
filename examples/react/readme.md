@@ -1,4 +1,4 @@
-Example of using [MDX](https://mdxjs.com/) with React.
+# Example Vite + [MDX](https://mdxjs.com/) + React.
 
 To run it:
 

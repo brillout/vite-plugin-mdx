@@ -22,15 +22,14 @@
     "vite": "*"
   },
   "dependencies": {
-    "esbuild": "^0.8.31",
-    "remark-frontmatter": "^2.0.0"
+    "esbuild": "^0.8.31"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@types/es-module-lexer": "^0.3.0",
     "@types/node": "^14.14.22",
     "typescript": "^4.1.3",
-    "vite": "^2.0.0-beta.67"
+    "vite": "^2.0.4"
   },
   "description": "Vite plugin for MDX",
   "license": "MIT",

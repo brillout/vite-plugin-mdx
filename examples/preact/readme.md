@@ -1,4 +1,4 @@
-# Example of using [MDX](https://mdxjs.com/) with Preact
+# Example Vite + [MDX](https://mdxjs.com/) + Preact.
 
 To run it:
 
