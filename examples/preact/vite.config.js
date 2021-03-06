@@ -1,5 +1,5 @@
 import prefresh from '@prefresh/vite';
-import mdx from "@brillout/vite-plugin-mdx";
+import mdx from "vite-plugin-mdx";
 
 export default {
   esbuild: {

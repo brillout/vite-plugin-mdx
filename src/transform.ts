@@ -6,7 +6,7 @@ import { join as pathJoin } from 'path'
 export { transform }
 export { stopService }
 
-const pluginName = '@brillout/vite-plugin-mdx'
+const pluginName = 'vite-plugin-mdx'
 
 async function transform({
   code_mdx,

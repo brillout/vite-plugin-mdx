@@ -17,7 +17,7 @@ Features:
 
    1. Vite Plugin:
       ```sh
-       npm install @brillout/vite-plugin-mdx
+       npm install vite-plugin-mdx
       ```
    2. MDX v1:
       ```sh
@@ -41,7 +41,7 @@ Features:
    ```js
    // vite.config.js
 
-   import mdx from '@brillout/vite-plugin-mdx'
+   import mdx from 'vite-plugin-mdx'
 
    // `options` are passed to `@mdx-js/mdx`
    const options = {
