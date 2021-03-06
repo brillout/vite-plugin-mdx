@@ -1,5 +1,5 @@
-import prefresh from '@prefresh/vite';
-import mdx from "vite-plugin-mdx";
+import prefresh from '@prefresh/vite'
+import mdx from 'vite-plugin-mdx'
 
 export default {
   esbuild: {
@@ -8,4 +8,4 @@ export default {
     jsxInject: `import { h, Fragment } from 'preact'`
   },
   plugins: [prefresh(), mdx()]
-};
+}
