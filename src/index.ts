@@ -7,11 +7,21 @@ export default createPlugin
 function createPlugin(mdxOptions?: mdx.Options): Plugin {
   return {
     name: 'vite-plugin-mdx',
-    transform(code_mdx: string, id: string, ssr?: boolean) {
-      if (!/\.mdx?$/.test(id)) {
-        return
+    configResolved({ plugins }) {
+      const reactRefresh = plugins.find((p) => p.name === 'react-refresh')
+
+      this.transform = async function (code_mdx, id, ssr) {
+        if (/\.mdx?$/.test(id)) {
+          const code = await transform({ code_mdx, mdxOptions, ssr })
+          const refreshResult = await reactRefresh?.transform!.call(
+            this,
+            code,
+            id + '.js',
+            ssr
+          )
+          return refreshResult || code
+        }
       }
-      return transform({ code_mdx, mdxOptions, ssr })
     },
     async closeBundle() {
       await stopService()
