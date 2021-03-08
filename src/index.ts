@@ -1,9 +1,10 @@
 import { Plugin } from 'vite'
+import mdx from '@mdx-js/mdx'
 import { stopService, transform } from './transform'
 
 export default createPlugin
 
-function createPlugin(mdxOptions?: any): Plugin {
+function createPlugin(mdxOptions?: mdx.Options): Plugin {
   return {
     name: 'vite-plugin-mdx',
     transform(code_mdx: string, id: string, ssr?: boolean) {

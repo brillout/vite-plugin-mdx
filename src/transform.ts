@@ -1,5 +1,4 @@
 import { startService, Service } from 'esbuild'
-//@ts-ignore
 import mdx from '@mdx-js/mdx'
 import { join as pathJoin } from 'path'
 
@@ -14,7 +13,7 @@ async function transform({
   ssr = false
 }: {
   code_mdx: string
-  mdxOptions?: any
+  mdxOptions?: mdx.Options
   ssr?: boolean
 }): Promise<string> {
   const code_jsx = await mdxToJsx(code_mdx, mdxOptions)
@@ -23,7 +22,7 @@ async function transform({
   return code_final
 }
 
-async function mdxToJsx(code_mdx: string, mdxOptions: any) {
+async function mdxToJsx(code_mdx: string, mdxOptions?: mdx.Options) {
   const code_jsx = await mdx(code_mdx, mdxOptions)
   return code_jsx
 }
