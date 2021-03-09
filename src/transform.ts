@@ -1,7 +1,6 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
 import { join as pathJoin } from 'path'
-import resolve = require('resolve-from')
 
 export { transform }
 export { stopService }
@@ -50,7 +49,7 @@ async function jsxToES2019(code_jsx: string) {
 }
 
 function injectImports(code_es2019: string, ssr: boolean, root: string) {
-  if (resolve.silent(root, 'preact')) {
+  if (resolve(root, 'preact')) {
     return [
       `import { h } from 'preact'`,
       `import { mdx } from '${getMdxImportPath('@mdx-js/preact', ssr, root)}'`,
@@ -59,7 +58,7 @@ function injectImports(code_es2019: string, ssr: boolean, root: string) {
     ].join('\n')
   }
 
-  if (resolve.silent(root, 'react')) {
+  if (resolve(root, 'react')) {
     return [
       `import React from 'react'`,
       `import { mdx } from '${getMdxImportPath('@mdx-js/react', ssr, root)}'`,
@@ -78,7 +77,7 @@ function getMdxImportPath(
   ssr: boolean,
   root: string
 ): string {
-  const packageJsonPath = resolve.silent(
+  const packageJsonPath = resolve(
     root,
     pathJoin(mdxPackageName, 'package.json')
   )
@@ -90,6 +89,14 @@ function getMdxImportPath(
   throw new Error(
     `[Wrong Usage][${pluginName}] You need to \`npm install ${mdxPackageName}\`.`
   )
+}
+
+function resolve(from: string, source: string) {
+  try {
+    return require.resolve(source, { paths: [from] })
+  } catch (err) {
+    return null
+  }
 }
 
 let _service: Promise<Service> | undefined
