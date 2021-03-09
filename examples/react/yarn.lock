@@ -259,11 +259,6 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@brillout/vite-plugin-mdx@file:../..":
-  version "0.1.4"
-  dependencies:
-    esbuild "^0.8.31"
-
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.6.22.tgz#8a723157bf90e78f17dc0f27995398e6c731f1ba"
@@ -1015,6 +1010,11 @@ vfile@^4.0.0:
     is-buffer "^2.0.0"
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
+
+"vite-plugin-mdx@file:../..":
+  version "3.0.0"
+  dependencies:
+    esbuild "^0.8.31"
 
 vite@^2.0.0-beta.65:
   version "2.0.0-beta.67"
