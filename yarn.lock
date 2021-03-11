@@ -450,6 +450,11 @@ extend@^3.0.0:
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
 
+find-dependency@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/find-dependency/-/find-dependency-1.3.0.tgz#36e1d47e6978772c6e3e9145d2d3f8b65b2b0718"
+  integrity sha512-3/jC4BIM4WvzO1b5m2QC1KPudgqcpTGGOA9lKMhQ9RUhGEvtS5oUGU2JlFWhhuFUK1I4MhrL66amf0qxkxhoIQ==
+
 fsevents@~2.3.1:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
