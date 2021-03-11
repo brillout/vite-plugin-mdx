@@ -1,6 +1,7 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
 import { join as pathJoin } from 'path'
+import findDependency from 'find-dependency'
 
 export { transform }
 export { stopService }
@@ -49,7 +50,7 @@ async function jsxToES2019(code_jsx: string) {
 }
 
 function injectImports(code_es2019: string, ssr: boolean, root: string) {
-  if (resolve(root, 'preact')) {
+  if (findPackage('preact', root)) {
     return [
       `import { h } from 'preact'`,
       `import { mdx } from '${getMdxImportPath('@mdx-js/preact', ssr, root)}'`,
@@ -58,7 +59,7 @@ function injectImports(code_es2019: string, ssr: boolean, root: string) {
     ].join('\n')
   }
 
-  if (resolve(root, 'react')) {
+  if (findPackage('react', root)) {
     return [
       `import React from 'react'`,
       `import { mdx } from '${getMdxImportPath('@mdx-js/react', ssr, root)}'`,
@@ -77,13 +78,13 @@ function getMdxImportPath(
   ssr: boolean,
   root: string
 ): string {
-  const packageJsonPath = resolve(
-    root,
-    pathJoin(mdxPackageName, 'package.json')
-  )
-  if (packageJsonPath) {
+  const mdxPackageRoot = findPackage(mdxPackageName, root)
+  if (mdxPackageRoot) {
     return ssr
-      ? pathJoin(mdxPackageName, require(packageJsonPath).module)
+      ? pathJoin(
+          mdxPackageName,
+          require(pathJoin(mdxPackageRoot, 'package.json')).module
+        )
       : mdxPackageName
   }
   throw new Error(
@@ -91,12 +92,12 @@ function getMdxImportPath(
   )
 }
 
-function resolve(from: string, source: string) {
-  try {
-    return require.resolve(source, { paths: [from] })
-  } catch (err) {
-    return null
-  }
+/**
+ * Search the node_modules of `cwd` and its ancestors until a package is found.
+ * Skip global node_modules and vite/node_modules (local clone might be used).
+ */
+function findPackage(name: string, cwd: string) {
+  return findDependency(name, { cwd, skipGlobal: true })
 }
 
 let _service: Promise<Service> | undefined
