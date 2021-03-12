@@ -1,6 +1,5 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
-import { join as pathJoin } from 'path'
 import findDependency from 'find-dependency'
 
 export { transform }
@@ -11,12 +10,11 @@ const pluginName = 'vite-plugin-mdx'
 async function transform(
   code_mdx: string,
   mdxOptions?: mdx.Options,
-  ssr = false,
   root = __dirname
 ) {
   const code_jsx = await mdx(code_mdx, mdxOptions)
   const code_es2019 = await jsxToES2019(code_jsx)
-  const code_final = injectImports(code_es2019, ssr, root)
+  const code_final = injectImports(code_es2019, root)
   return code_final
 }
 
@@ -49,11 +47,11 @@ async function jsxToES2019(code_jsx: string) {
   return code_es2019
 }
 
-function injectImports(code_es2019: string, ssr: boolean, root: string) {
+function injectImports(code_es2019: string, root: string) {
   if (findPackage('preact', root)) {
     return [
       `import { h } from 'preact'`,
-      `import { mdx } from '${getMdxImportPath('@mdx-js/preact', ssr, root)}'`,
+      `import { mdx } from '${getMdxImportPath('@mdx-js/preact', root)}'`,
       '',
       code_es2019
     ].join('\n')
@@ -62,7 +60,7 @@ function injectImports(code_es2019: string, ssr: boolean, root: string) {
   if (findPackage('react', root)) {
     return [
       `import React from 'react'`,
-      `import { mdx } from '${getMdxImportPath('@mdx-js/react', ssr, root)}'`,
+      `import { mdx } from '${getMdxImportPath('@mdx-js/react', root)}'`,
       '',
       code_es2019
     ].join('\n')
@@ -73,19 +71,10 @@ function injectImports(code_es2019: string, ssr: boolean, root: string) {
   )
 }
 
-function getMdxImportPath(
-  mdxPackageName: string,
-  ssr: boolean,
-  root: string
-): string {
+function getMdxImportPath(mdxPackageName: string, root: string): string {
   const mdxPackageRoot = findPackage(mdxPackageName, root)
   if (mdxPackageRoot) {
-    return ssr
-      ? pathJoin(
-          mdxPackageName,
-          require(pathJoin(mdxPackageRoot, 'package.json')).module
-        )
-      : mdxPackageName
+    return mdxPackageName
   }
   throw new Error(
     `[Wrong Usage][${pluginName}] You need to \`npm install ${mdxPackageName}\`.`
