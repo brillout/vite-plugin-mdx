@@ -23,14 +23,13 @@ function createPlugin(mdxOptions: mdx.Options = {}): MdxPlugin {
       const reactRefresh = config.plugins.find(
         (p) => p.name === 'react-refresh'
       )
-      this.transform = async function (code, id, ssr) {
+      this.transform = async function (code, id) {
         if (/\.mdx?$/.test(id)) {
-          code = await transform(code, mdxOptions, ssr, config.root)
+          code = await transform(code, mdxOptions, config.root)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
             code,
-            id + '.js',
-            ssr
+            id + '.js'
           )
           return refreshResult || code
         }
