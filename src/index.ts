@@ -45,20 +45,24 @@ function createPlugin(
 }
 
 function mergeOptions(globalOptions: MdxOptions, localOptions?: MdxOptions) {
-  if (!localOptions) {
-    return globalOptions
-  }
   return {
     ...globalOptions,
     ...localOptions,
-    remarkPlugins: globalOptions.remarkPlugins!.concat(
-      localOptions.remarkPlugins || []
+    remarkPlugins: mergeArrays(
+      globalOptions.remarkPlugins,
+      localOptions?.remarkPlugins
     ),
-    rehypePlugins: globalOptions.rehypePlugins!.concat(
-      localOptions.rehypePlugins || []
+    rehypePlugins: mergeArrays(
+      globalOptions.rehypePlugins,
+      localOptions?.rehypePlugins
     ),
-    compilers: (globalOptions.compilers || []).concat(
-      localOptions.compilers || []
+    compilers: mergeArrays(
+      globalOptions.compilers, //
+      localOptions?.compilers
     )
   }
+}
+
+function mergeArrays<T>(a: T[] = [], b: T[] = []) {
+  return a.concat(b).filter(Boolean)
 }
