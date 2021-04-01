@@ -7,8 +7,8 @@ type RehypePlugin = Pluggable
 
 export interface MdxOptions
   extends Omit<mdx.Options, 'remarkPlugins' | 'rehypePlugins'> {
-  remarkPlugins?: RemarkPlugin[]
-  rehypePlugins?: RehypePlugin[]
+  remarkPlugins?: Readonly<RemarkPlugin>[]
+  rehypePlugins?: Readonly<RehypePlugin>[]
 }
 
 export interface MdxPlugin extends VitePlugin {
