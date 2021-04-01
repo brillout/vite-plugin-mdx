@@ -1,18 +1,9 @@
-import { Plugin as VitePlugin } from 'vite'
-import mdx from '@mdx-js/mdx'
-import type { Plugin as UnifiedPlugin } from 'unified'
 import { stopService, transform } from './transform'
+import { MdxOptions, MdxPlugin } from './types'
 
 export default createPlugin
 
-export interface MdxPlugin extends VitePlugin {
-  mdxOptions: mdx.Options & {
-    remarkPlugins: UnifiedPlugin[]
-    rehypePlugins: UnifiedPlugin[]
-  }
-}
-
-function createPlugin(mdxOptions: mdx.Options = {}): MdxPlugin {
+function createPlugin(mdxOptions: MdxOptions = {}): MdxPlugin {
   mdxOptions.remarkPlugins ??= []
   mdxOptions.rehypePlugins ??= []
 
