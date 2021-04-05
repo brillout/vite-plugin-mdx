@@ -1,7 +1,7 @@
+import { requireMdx } from './resolveImport'
 import { remarkMdxImport } from './remarkMdxImport'
 import { stopService, transform } from './transform'
 import { MdxOptions, MdxPlugin, RemarkPlugin } from './types'
-import mdx from '@mdx-js/mdx'
 import fs from 'fs'
 
 export default createPlugin
@@ -53,7 +53,7 @@ function createPlugin(
                   getMdxOptions?.(id).remarkPlugins
                 )
                 remarkPlugins.push(mdxImportPlugin)
-                return mdx.createMdxAstCompiler({
+                return requireMdx(root).createMdxAstCompiler({
                   remarkPlugins: remarkPlugins as any[]
                 })
               }
