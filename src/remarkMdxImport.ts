@@ -23,17 +23,20 @@ export function remarkMdxImport({
       const splices = await Promise.all(
         imports.map(
           async ({ id, index }): Promise<Splice> => {
-            const filePath = await resolve(id, file.path)
-            if (!filePath) {
+            const importedPath = await resolve(id, file.path)
+            if (!importedPath) {
               // Strip unresolved imports.
               return [index, 1, []]
             }
-            const code = await readFile(filePath)
-            const compiler = getCompiler(filePath)
-            const ast = compiler.parse({
-              contents: code,
-              path: filePath
-            })
+            const importedFile = {
+              path: importedPath,
+              contents: await readFile(importedPath)
+            }
+            const compiler = getCompiler(importedPath)
+            const ast = await compiler.run(
+              compiler.parse(importedFile),
+              importedFile
+            )
             // Inject the AST of the imported markdown.
             return [index, 1, (ast as import('mdast').Root).children]
           }
