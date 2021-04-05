@@ -1,6 +1,8 @@
 import { stopService, transform } from './transform'
 import { MdxOptions, MdxPlugin } from './types'
 
+export { MdxOptions, MdxPlugin }
+
 export default createPlugin
 
 function createPlugin(
