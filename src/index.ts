@@ -1,5 +1,8 @@
+import { remarkMdxImport } from './remarkMdxImport'
 import { stopService, transform } from './transform'
-import { MdxOptions, MdxPlugin } from './types'
+import { MdxOptions, MdxPlugin, RemarkPlugin } from './types'
+import mdx from '@mdx-js/mdx'
+import fs from 'fs'
 
 export { MdxOptions, MdxPlugin }
 
@@ -19,25 +22,54 @@ function createPlugin(
   globalMdxOptions.remarkPlugins ??= []
   globalMdxOptions.rehypePlugins ??= []
 
+  let mdxImportPlugin: RemarkPlugin
   return {
     name: 'vite-plugin-mdx',
     mdxOptions: globalMdxOptions,
-    configResolved(config) {
-      const reactRefresh = config.plugins.find(
-        (p) => p.name === 'react-refresh'
-      )
+    configResolved({ root, plugins, logger }) {
+      const reactRefresh = plugins.find((p) => p.name === 'react-refresh')
+
       this.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
           const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
           mdxOptions.filepath = id
 
-          code = await transform(code, mdxOptions, config.root)
+          // When a .mdx or .md file is imported without a specifier,
+          // assume the intention is to embed its contents in the importer.
+          // (eg: import "./foo.mdx" OR import "./foo.md")
+          mdxOptions.remarkPlugins.push(
+            (mdxImportPlugin ??= remarkMdxImport({
+              readFile: (filePath) => fs.promises.readFile(filePath, 'utf8'),
+              resolve: async (id, importer) => {
+                const resolved = await this.resolve(id, importer)
+                if (!resolved)
+                  logger.warn(
+                    `Failed to resolve "${id}" imported by "${importer}"`
+                  )
+
+                return resolved?.id
+              },
+              getCompiler() {
+                const remarkPlugins = mergeArrays(
+                  globalMdxOptions.remarkPlugins,
+                  getMdxOptions?.(id).remarkPlugins
+                )
+                remarkPlugins.push(mdxImportPlugin)
+                return mdx.createMdxAstCompiler({
+                  remarkPlugins: remarkPlugins as any[]
+                })
+              }
+            }))
+          )
+
+          code = await transform(code, mdxOptions, root)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
             code,
             id + '.js',
             ssr
           )
+
           return refreshResult || code
         }
       }
