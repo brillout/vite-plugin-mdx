@@ -27,6 +27,8 @@ function createPlugin(
       this.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
           const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
+          mdxOptions.filepath = id
+
           code = await transform(code, mdxOptions, config.root)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
