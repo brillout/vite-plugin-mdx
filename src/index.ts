@@ -57,10 +57,6 @@ function mergeOptions(globalOptions: MdxOptions, localOptions?: MdxOptions) {
     rehypePlugins: mergeArrays(
       globalOptions.rehypePlugins,
       localOptions?.rehypePlugins
-    ),
-    compilers: mergeArrays(
-      globalOptions.compilers, //
-      localOptions?.compilers
     )
   }
 }
