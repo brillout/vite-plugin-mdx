@@ -49,10 +49,10 @@ function createPlugin(
 
                 return resolved?.id
               },
-              getCompiler() {
+              getCompiler(filePath) {
                 const remarkPlugins = mergeArrays(
                   globalMdxOptions.remarkPlugins,
-                  getMdxOptions?.(id).remarkPlugins
+                  getMdxOptions?.(filePath).remarkPlugins
                 )
                 remarkPlugins.push(mdxImportPlugin)
                 return mdx.createMdxAstCompiler({
