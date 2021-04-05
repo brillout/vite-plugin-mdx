@@ -1,4 +1,4 @@
-import type { Processor } from 'unified'
+import type { Processor, Transformer } from 'unified'
 import type { Node } from 'unist'
 
 const importRE = /^import ['"](.+)['"]$/
@@ -12,8 +12,8 @@ export function remarkMdxImport({
   resolve(id: string, importer?: string): Promise<string | undefined>
   readFile(filePath: string): Promise<string>
   getCompiler(filePath: string): Processor
-}) {
-  return () => async (ast: Node, file: import('vfile').VFile) => {
+}): () => Transformer {
+  return () => async (ast, file) => {
     if (!isRootNode(ast)) return
 
     const imports = findMdxImports(ast)
