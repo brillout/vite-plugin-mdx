@@ -7,7 +7,15 @@ const importCache: {
 type MdxModule = typeof import('@mdx-js/mdx')
 
 export function requireMdx(cwd: string): MdxModule {
-  return require(resolveImport('@mdx-js/mdx', cwd) || '@mdx-js/mdx')
+  return require(resolveMdxImport(cwd))
+}
+
+export function resolveMdxImport(cwd: string) {
+  return resolveImport('@mdx-js/mdx', cwd) || require.resolve('@mdx-js/mdx')
+}
+
+export function requireFrom(name: string, cwd: string) {
+  return require(resolveImport(name, cwd, true))
 }
 
 /**
@@ -15,6 +23,12 @@ export function requireMdx(cwd: string): MdxModule {
  * Skip global `node_modules` and `vite/node_modules` (since `vite` might be
  * a local clone).
  */
+export function resolveImport(name: string, cwd: string): string | undefined
+export function resolveImport(
+  name: string,
+  cwd: string,
+  throwOnMissing: true
+): string
 export function resolveImport(
   name: string,
   cwd: string,
