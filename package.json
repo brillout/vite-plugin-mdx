@@ -22,6 +22,7 @@
     "vite": "*"
   },
   "dependencies": {
+    "@alloc/quick-lru": "^5.2.0",
     "esbuild": "^0.8.31",
     "find-dependency": "^1.3.0"
   },
