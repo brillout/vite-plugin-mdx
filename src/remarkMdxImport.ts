@@ -4,7 +4,7 @@ import type { Node } from 'unist'
 import LRUCache from '@alloc/quick-lru'
 import { ImportMap } from './ImportMap'
 
-const importRE = /^import ['"](.+)['"]$/
+const importRE = /^import ['"](.+)['"]\s*$/
 const mdxRE = /\.mdx?$/
 
 export type MdxAstCache = LRUCache<string, Content[]>
