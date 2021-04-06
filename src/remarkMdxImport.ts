@@ -1,5 +1,6 @@
 import type { Processor, Transformer } from 'unified'
 import type { Node } from 'unist'
+import { ImportMap } from './ImportMap'
 
 const importRE = /^import ['"](.+)['"]$/
 const mdxRE = /\.mdx?$/
@@ -7,14 +8,19 @@ const mdxRE = /\.mdx?$/
 export function remarkMdxImport({
   resolve,
   readFile,
-  getCompiler
+  getCompiler,
+  importMap
 }: {
   resolve(id: string, importer?: string): Promise<string | undefined>
   readFile(filePath: string): Promise<string>
   getCompiler(filePath: string): Processor
+  importMap?: ImportMap
 }): () => Transformer {
   return () => async (ast, file) => {
     if (!isRootNode(ast)) return
+
+    const importer = file.path!
+    importMap?.deleteImporter(importer)
 
     const imports = findMdxImports(ast)
     if (imports.length) {
@@ -23,11 +29,12 @@ export function remarkMdxImport({
       const splices = await Promise.all(
         imports.map(
           async ({ id, index }): Promise<Splice> => {
-            const importedPath = await resolve(id, file.path)
+            const importedPath = await resolve(id, importer)
             if (!importedPath) {
               // Strip unresolved imports.
               return [index, 1, []]
             }
+            importMap?.addImport(importedPath, importer)
             const importedFile = {
               path: importedPath,
               contents: await readFile(importedPath)
