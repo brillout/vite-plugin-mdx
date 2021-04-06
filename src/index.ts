@@ -1,8 +1,9 @@
-import { remarkMdxImport } from './remarkMdxImport'
+import { MdxAstCache, remarkMdxImport } from './remarkMdxImport'
 import { stopService, transform } from './transform'
 import { MdxOptions, MdxPlugin, RemarkPlugin } from './types'
 import { createMdxAstCompiler } from './createMdxAstCompiler'
 import { ImportMap } from './ImportMap'
+import LRUCache from '@alloc/quick-lru'
 import fs from 'fs'
 
 export { MdxOptions, MdxPlugin }
@@ -25,6 +26,7 @@ function createPlugin(
 
   let mdxImportPlugin: RemarkPlugin
   let importMap: ImportMap
+  let astCache: MdxAstCache
   return {
     name: 'vite-plugin-mdx',
     mdxOptions: globalMdxOptions,
@@ -33,6 +35,10 @@ function createPlugin(
 
       this.configureServer = ({ watcher }) => {
         importMap = new ImportMap()
+        astCache = new LRUCache({
+          maxAge: 30 * 6e4, // 30 minutes
+          maxSize: 100
+        })
 
         // If a MDX file imports other MDX/Markdown files, we want to
         // tell Vite about their relationship by emitting a watcher event
@@ -44,6 +50,7 @@ function createPlugin(
             }
             const importers = importMap.importers.get(filePath)
             if (importers) {
+              astCache.delete(filePath)
               importers.forEach((importer) => {
                 watcher.emit('change', importer)
               })
@@ -62,6 +69,7 @@ function createPlugin(
           // (eg: import "./foo.mdx" OR import "./foo.md")
           mdxOptions.remarkPlugins.push(
             (mdxImportPlugin ??= remarkMdxImport({
+              astCache,
               importMap,
               readFile: (filePath) => fs.promises.readFile(filePath, 'utf8'),
               resolve: async (id, importer) => {

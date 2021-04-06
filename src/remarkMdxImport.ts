@@ -1,20 +1,26 @@
 import type { Processor, Transformer } from 'unified'
+import type { Root, Content } from 'mdast'
 import type { Node } from 'unist'
+import LRUCache from '@alloc/quick-lru'
 import { ImportMap } from './ImportMap'
 
 const importRE = /^import ['"](.+)['"]$/
 const mdxRE = /\.mdx?$/
 
+export type MdxAstCache = LRUCache<string, Content[]>
+
 export function remarkMdxImport({
   resolve,
   readFile,
   getCompiler,
-  importMap
+  importMap,
+  astCache
 }: {
   resolve(id: string, importer?: string): Promise<string | undefined>
   readFile(filePath: string): Promise<string>
   getCompiler(filePath: string): Processor
   importMap?: ImportMap
+  astCache?: MdxAstCache
 }): () => Transformer {
   return () => async (ast, file) => {
     if (!isRootNode(ast)) return
@@ -35,17 +41,20 @@ export function remarkMdxImport({
               return [index, 1, []]
             }
             importMap?.addImport(importedPath, importer)
-            const importedFile = {
-              path: importedPath,
-              contents: await readFile(importedPath)
+            let ast = astCache?.get(importedPath)
+            if (!ast) {
+              const importedFile = {
+                path: importedPath,
+                contents: await readFile(importedPath)
+              }
+              const compiler = getCompiler(importedPath)
+              const parsedFile = compiler.parse(importedFile)
+              const compiledFile = await compiler.run(parsedFile, importedFile)
+              ast = (compiledFile as Root).children
+              astCache?.set(importedPath, ast)
             }
-            const compiler = getCompiler(importedPath)
-            const ast = await compiler.run(
-              compiler.parse(importedFile),
-              importedFile
-            )
             // Inject the AST of the imported markdown.
-            return [index, 1, (ast as import('mdast').Root).children]
+            return [index, 1, ast]
           }
         )
       )
