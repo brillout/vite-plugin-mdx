@@ -2,6 +2,7 @@ import { remarkMdxImport } from './remarkMdxImport'
 import { stopService, transform } from './transform'
 import { MdxOptions, MdxPlugin, RemarkPlugin } from './types'
 import { createMdxAstCompiler } from './createMdxAstCompiler'
+import { ImportMap } from './ImportMap'
 import fs from 'fs'
 
 export { MdxOptions, MdxPlugin }
@@ -23,11 +24,33 @@ function createPlugin(
   globalMdxOptions.rehypePlugins ??= []
 
   let mdxImportPlugin: RemarkPlugin
+  let importMap: ImportMap
   return {
     name: 'vite-plugin-mdx',
     mdxOptions: globalMdxOptions,
     configResolved({ root, plugins, logger }) {
       const reactRefresh = plugins.find((p) => p.name === 'react-refresh')
+
+      this.configureServer = ({ watcher }) => {
+        importMap = new ImportMap()
+
+        // If a MDX file imports other MDX/Markdown files, we want to
+        // tell Vite about their relationship by emitting a watcher event
+        // for the importer when its imported files are updated.
+        watcher.on('all', (event, filePath) => {
+          if (/\.mdx?$/.test(filePath)) {
+            if (event === 'unlink') {
+              importMap.deleteImporter(filePath)
+            }
+            const importers = importMap.importers.get(filePath)
+            if (importers) {
+              importers.forEach((importer) => {
+                watcher.emit('change', importer)
+              })
+            }
+          }
+        })
+      }
 
       this.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
@@ -39,6 +62,7 @@ function createPlugin(
           // (eg: import "./foo.mdx" OR import "./foo.md")
           mdxOptions.remarkPlugins.push(
             (mdxImportPlugin ??= remarkMdxImport({
+              importMap,
               readFile: (filePath) => fs.promises.readFile(filePath, 'utf8'),
               resolve: async (id, importer) => {
                 const resolved = await this.resolve(id, importer)
