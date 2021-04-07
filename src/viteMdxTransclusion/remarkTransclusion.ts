@@ -9,7 +9,7 @@ const mdxRE = /\.mdx?$/
 
 export type MdxAstCache = LRUCache<string, Content[]>
 
-export function remarkMdxImport({
+export function remarkTransclusion({
   resolve,
   readFile,
   getCompiler,
