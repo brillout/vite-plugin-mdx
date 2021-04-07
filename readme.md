@@ -93,3 +93,19 @@ Features:
 
 - [React example](/examples/react/).
 - [Preact example](/examples/preact/).
+
+## File-specific options
+
+To define options a per-file basis, you can pass a function to the `mdx` plugin factory.
+
+```ts
+mdx((filename) => {
+  // Any options passed to `mdx` can be returned.
+  return {
+    remarkPlugins: [
+      // Enable a plugin based on the current file.
+      /\/components\//.test(filename) && someRemarkPlugin,
+    ]
+  }
+})
+```

@@ -1,30 +1,36 @@
-import { Plugin as VitePlugin } from 'vite'
-import mdx from '@mdx-js/mdx'
-import type { Plugin as UnifiedPlugin } from 'unified'
 import { stopService, transform } from './transform'
+import { MdxOptions, MdxPlugin } from './types'
+
+export { MdxOptions, MdxPlugin }
 
 export default createPlugin
 
-export interface MdxPlugin extends VitePlugin {
-  mdxOptions: mdx.Options & {
-    remarkPlugins: UnifiedPlugin[]
-    rehypePlugins: UnifiedPlugin[]
+function createPlugin(
+  mdxOptions: MdxOptions | ((filename: string) => MdxOptions) = {}
+): MdxPlugin {
+  let getMdxOptions: ((filename: string) => MdxOptions) | undefined
+  let globalMdxOptions: any = mdxOptions
+  if (typeof mdxOptions === 'function') {
+    getMdxOptions = mdxOptions
+    globalMdxOptions = {}
   }
-}
 
-function createPlugin(mdxOptions: mdx.Options = {}): MdxPlugin {
-  mdxOptions.remarkPlugins ??= []
-  mdxOptions.rehypePlugins ??= []
+  // Ensure plugin arrays exist for other Vite plugins to manipulate.
+  globalMdxOptions.remarkPlugins ??= []
+  globalMdxOptions.rehypePlugins ??= []
 
   return {
     name: 'vite-plugin-mdx',
-    mdxOptions: mdxOptions as any,
+    mdxOptions: globalMdxOptions,
     configResolved(config) {
       const reactRefresh = config.plugins.find(
         (p) => p.name === 'react-refresh'
       )
       this.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
+          const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
+          mdxOptions.filepath = id
+
           code = await transform(code, mdxOptions, config.root)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
@@ -40,4 +46,23 @@ function createPlugin(mdxOptions: mdx.Options = {}): MdxPlugin {
       await stopService()
     }
   }
+}
+
+function mergeOptions(globalOptions: MdxOptions, localOptions?: MdxOptions) {
+  return {
+    ...globalOptions,
+    ...localOptions,
+    remarkPlugins: mergeArrays(
+      globalOptions.remarkPlugins,
+      localOptions?.remarkPlugins
+    ),
+    rehypePlugins: mergeArrays(
+      globalOptions.rehypePlugins,
+      localOptions?.rehypePlugins
+    )
+  }
+}
+
+function mergeArrays<T>(a: T[] = [], b: T[] = []) {
+  return a.concat(b).filter(Boolean)
 }

@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-mdx",
-  "version": "3.2.2",
+  "version": "3.3.2",
   "scripts": {
     "// User Scripts": "",
     "dev": "yarn tsc:watch",
@@ -26,7 +26,7 @@
     "find-dependency": "^1.3.0"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "^2.0.0-next.8",
+    "@mdx-js/mdx": "^2.0.0-next.9",
     "@types/es-module-lexer": "^0.3.0",
     "@types/node": "^14.14.22",
     "typescript": "^4.1.3",
