@@ -38,7 +38,7 @@ export function resolveImport(
   if (!importCache[cacheKey]) {
     const resolved = findDependency(name, { cwd, skipGlobal: true })
     if (throwOnMissing && !resolved) {
-      throw new Error(`[vite-plugin-mdx] "{name}" must be installed`)
+      throw new Error(`[vite-plugin-mdx] "${name}" must be installed`)
     }
     importCache[cacheKey] = resolved
   }
