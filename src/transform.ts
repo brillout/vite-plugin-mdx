@@ -1,7 +1,7 @@
 import { startService, Service } from 'esbuild'
 import mdx from '@mdx-js/mdx'
 import findDependency from 'find-dependency'
-import { MdxOptions } from './types'
+import { MdxOptions, TransformOption } from './types'
 
 export { transform }
 export { stopService }
@@ -11,11 +11,12 @@ const pluginName = 'vite-plugin-mdx'
 async function transform(
   code_mdx: string,
   mdxOptions?: MdxOptions,
+  transformOption?: TransformOption,
   root = __dirname
 ) {
   const code_jsx = await mdx(code_mdx, mdxOptions as any)
   const code_es2019 = await jsxToES2019(code_jsx)
-  const code_final = injectImports(code_es2019, root)
+  const code_final = injectImports(code_es2019, root, transformOption)
   return code_final
 }
 
@@ -48,7 +49,16 @@ async function jsxToES2019(code_jsx: string) {
   return code_es2019
 }
 
-function injectImports(code_es2019: string, root: string) {
+function injectImports(code_es2019: string, root: string, transformOption?: TransformOption) {
+  if (transformOption) {
+    return [
+      `${transformOption.inject}`,
+      `import { mdx } from '${getMdxImportPath(transformOption.package, root)}'`,
+      '',
+      code_es2019
+    ].join('\n')
+  }
+
   if (findPackage('preact', root)) {
     return [
       `import { h } from 'preact'`,

@@ -1,12 +1,13 @@
 import { stopService, transform } from './transform'
-import { MdxOptions, MdxPlugin } from './types'
+import { MdxOptions, MdxPlugin, TransformOption } from './types'
 
-export { MdxOptions, MdxPlugin }
+export { MdxOptions, MdxPlugin, TransformOption }
 
 export default createPlugin
 
 function createPlugin(
-  mdxOptions: MdxOptions | ((filename: string) => MdxOptions) = {}
+  mdxOptions: MdxOptions | ((filename: string) => MdxOptions) = {},
+  transformOption?: TransformOption
 ): MdxPlugin {
   let getMdxOptions: ((filename: string) => MdxOptions) | undefined
   let globalMdxOptions: any = mdxOptions
@@ -31,7 +32,7 @@ function createPlugin(
           const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
           mdxOptions.filepath = id
 
-          code = await transform(code, mdxOptions, config.root)
+          code = await transform(code, mdxOptions, transformOption, config.root)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
             code,

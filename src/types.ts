@@ -18,3 +18,8 @@ export interface MdxPlugin extends VitePlugin {
     rehypePlugins: RehypePlugin[]
   }
 }
+
+export interface TransformOption {
+  inject: string
+  package: string
+}
