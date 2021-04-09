@@ -109,3 +109,11 @@ mdx((filename) => {
   }
 })
 ```
+
+## Pre-built transclusion
+
+To embed an `.mdx` or `.md` file into another, you can import it without naming its export. The file extension is required. Remark plugins are applied to the imported file before it's embedded.
+
+```mdx
+import '../foo/bar.mdx'
+```
