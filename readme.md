@@ -1,4 +1,4 @@
-# Vite Plugin MDX
+# Vite Plugin MDX Extended
 
 Vite plugin to use MDX with your Vite app.
 
@@ -17,7 +17,7 @@ Features:
 
    1. Vite Plugin:
       ```sh
-       npm install vite-plugin-mdx
+       npm install vite-plugin-mdx-extended
       ```
    2. MDX v1:
       ```sh
