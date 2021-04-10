@@ -1,4 +1,4 @@
-import { requireFrom, resolveMdxImport } from '../resolveImport'
+import { requireFrom, resolveMdxImport } from '../imports'
 import { RemarkPlugin } from '../types'
 
 /**

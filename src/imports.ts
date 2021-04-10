@@ -52,3 +52,13 @@ export function resolveImport(
 export function assertImportExists(name: string, cwd: string) {
   return resolveImport(name, cwd, true) && name
 }
+
+export type NamedImports = {
+  [packageName: string]: string | string[]
+}
+
+export function inferNamedImports(root: string): NamedImports {
+  return resolveImport('preact', root)
+    ? { preact: ['h'], '@mdx-js/preact': ['mdx'] }
+    : { react: 'React', '@mdx-js/react': ['mdx'] }
+}

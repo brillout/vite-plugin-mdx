@@ -1,14 +1,25 @@
-import { stopService, transform } from './transform'
+import { createTransformer, stopService } from './transform'
 import { MdxOptions, MdxPlugin } from './types'
 import { viteMdxTransclusion } from './viteMdxTransclusion'
+import { NamedImports } from './imports'
 import { mergeArrays } from './common'
 
 export { MdxOptions, MdxPlugin }
 
-export default createPlugin
+export default function viteMdx(
+  mdxOptions?: MdxOptions | ((filename: string) => MdxOptions)
+) {
+  return createPlugin(mdxOptions || {})
+}
+
+viteMdx.withImports = (namedImports: NamedImports) =>
+  function mdx(mdxOptions?: MdxOptions | ((filename: string) => MdxOptions)) {
+    return createPlugin(mdxOptions || {}, namedImports)
+  }
 
 function createPlugin(
-  mdxOptions: MdxOptions | ((filename: string) => MdxOptions) = {}
+  mdxOptions: MdxOptions | ((filename: string) => MdxOptions),
+  namedImports?: NamedImports
 ) {
   let getMdxOptions: ((filename: string) => MdxOptions) | undefined
   let globalMdxOptions: any = mdxOptions
@@ -26,13 +37,14 @@ function createPlugin(
     mdxOptions: globalMdxOptions,
     configResolved({ root, plugins }) {
       const reactRefresh = plugins.find((p) => p.name === 'react-refresh')
+      const transform = createTransformer(root, namedImports)
 
       this.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
           const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
           mdxOptions.filepath = id
 
-          code = await transform(code, mdxOptions, root)
+          code = await transform(code, mdxOptions)
           const refreshResult = await reactRefresh?.transform!.call(
             this,
             code,
