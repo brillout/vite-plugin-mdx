@@ -40,7 +40,7 @@ async function jsxToES2019(code_jsx: string) {
   //*/
 
   let { code: code_es2019 } = await esBuild.transform(code_jsx, {
-    loader: 'jsx',
+    loader: 'tsx',
     jsxFactory: 'mdx',
     target: 'es2019'
   })
