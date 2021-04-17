@@ -52,7 +52,12 @@ function createPlugin(
             ssr
           )
 
-          return refreshResult || code
+          return (
+            refreshResult || {
+              code,
+              map: { mappings: '' }
+            }
+          )
         }
       }
     },
