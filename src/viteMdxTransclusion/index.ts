@@ -65,7 +65,7 @@ export function viteMdxTransclusion(
       // The remark plugin needs to resolve imports manually.
       let resolve: (id: string, importer?: string) => Promise<any>
       this.buildStart = function () {
-        resolve = this.resolve
+        resolve = this.resolve.bind(this)
       }
 
       globalMdxOptions.remarkPlugins.push(
