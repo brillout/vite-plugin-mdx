@@ -77,7 +77,7 @@ export function viteMdxTransclusion(
               if (resolved) {
                 id = normalizePath(resolved.id)
                 // Ensure files outside the Vite project root are watched.
-                if (watcher && isAbsolute(id) && id.startsWith(root + '/')) {
+                if (watcher && isAbsolute(id) && !id.startsWith(root + '/')) {
                   watcher.add(id)
                 }
                 return id
