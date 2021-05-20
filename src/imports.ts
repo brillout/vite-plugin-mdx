@@ -1,4 +1,4 @@
-import findDependency from 'find-dependency'
+import resolve from 'resolve'
 
 const importCache: {
   [cacheKey: string]: string | undefined
@@ -36,9 +36,13 @@ export function resolveImport(
 ) {
   const cacheKey = cwd + '\0' + name
   if (!importCache[cacheKey]) {
-    const resolved = findDependency(name, { cwd, skipGlobal: true })
-    if (throwOnMissing && !resolved) {
-      throw new Error(`[vite-plugin-mdx] "${name}" must be installed`)
+    let resolved
+    try {
+      resolved = resolve.sync(name, { basedir: cwd })
+    } catch (e) {
+      if (throwOnMissing) {
+        throw new Error(`[vite-plugin-mdx] "${name}" must be installed`)
+      }
     }
     importCache[cacheKey] = resolved
   }
