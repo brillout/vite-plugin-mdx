@@ -36,15 +36,13 @@ export function resolveImport(
 ) {
   const cacheKey = cwd + '\0' + name
   if (!importCache[cacheKey]) {
-    let resolved
     try {
-      resolved = resolve.sync(name, { basedir: cwd })
+      importCache[cacheKey] = resolve.sync(name, { basedir: cwd })
     } catch (e) {
       if (throwOnMissing) {
         throw new Error(`[vite-plugin-mdx] "${name}" must be installed`)
       }
     }
-    importCache[cacheKey] = resolved
   }
   return importCache[cacheKey]
 }
