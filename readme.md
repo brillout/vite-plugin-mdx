@@ -9,7 +9,7 @@ Features:
 - Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
 - HMR support.
 - SSR support.
-- Plugin support, such as [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter).
+- Plugin support, such as [remark-prism](https://github.com/sergioramos/remark-prism).
 
 ## Getting Started
 
@@ -47,7 +47,7 @@ Features:
    const options = {
      // See https://mdxjs.com/advanced/plugins
      remarkPlugins: [
-       // E.g. `remark-frontmatter`
+      // E.g. `require("remark-prism")`
      ],
      rehypePlugins: [],
    }
@@ -57,7 +57,7 @@ Features:
    }
    ```
 
-3. You can now write `.mdx` files.
+3. You can now write `.mdx` or `.md` files.
 
    ```mdx-js
    // hello.mdx
