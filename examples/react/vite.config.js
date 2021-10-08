@@ -5,8 +5,8 @@ import mdx from 'vite-plugin-mdx'
 const options = {
   // See https://mdxjs.com/advanced/plugins
   remarkPlugins: [
-      require('remark-prism'),
-      require('remark-frontmatter')
+    require('remark-frontmatter'),
+    require('remark-prism'),
   ],
   rehypePlugins: [],
 }
