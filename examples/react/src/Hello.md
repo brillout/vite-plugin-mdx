@@ -1,3 +1,8 @@
+---
+title: 'Hello'
+description: 'A quick example of how to use remark plugins with vite-plugin-mdx'
+---
+
 import { Counter } from './Counter.jsx';
 
 # Hello
@@ -31,7 +36,8 @@ import mdx from 'vite-plugin-mdx'
 const options = {
   remarkPlugins: [
     // plugin added!
-    require('remark-prism')
+    require('remark-prism'),
+    require('remark-frontmatter')
   ],
   rehypePlugins: [],
 }

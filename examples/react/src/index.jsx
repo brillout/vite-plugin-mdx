@@ -4,6 +4,8 @@ import './index.css'
 import Hello from './Hello.md'
 import "prismjs/themes/prism-tomorrow.css"
 
+console.log(Hello)
+
 ReactDOM.render(
   <React.StrictMode>
     <Hello />
