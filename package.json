@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-mdx",
-  "version": "3.5.7",
+  "version": "3.5.8",
   "scripts": {
     "// User Scripts": "",
     "dev": "yarn tsc:watch",
@@ -9,7 +9,7 @@
     "tsc:watch": "tsc --build --watch",
     "tsc:once": "tsc --build",
     "// Release": "",
-    "release": "yarn clean && yarn install && yarn tsc:once && npm publish",
+    "prepublishOnly": "yarn clean && yarn install && yarn tsc:once",
     "// Remove caches": "",
     "clean": "git clean -Xdff"
   },
