@@ -34,6 +34,8 @@ function createPlugin(
 
   const mdxPlugin: MdxPlugin = {
     name: 'vite-plugin-mdx',
+    // I can't think of any reason why a plugin would need to run before mdx; let's make sure `vite-plugin-mdx` runs first.
+    enforce: "pre",
     mdxOptions: globalMdxOptions,
     configResolved({ root, plugins }) {
       const reactRefresh = plugins.find((p) => p.name === 'react-refresh')
