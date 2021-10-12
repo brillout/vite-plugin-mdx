@@ -18,10 +18,10 @@ Edit `Counter.jsx` or `Hello.md` and save to experience HMR updates.
 ### Install `remark-frontmatter` and `remark-mdx-frontmatter`
 
 ```bash
-yarn add remark-frontmatter@2^ remark-mdx-frontmatter
+yarn add remark-frontmatter@^3.0.0 remark-mdx-frontmatter
 ```
 
-Note that remark-frontmatter has some breaking changes after version 2; pin to that version.
+Note that remark-frontmatter has some breaking changes after version 3; pin to that version.
 
 ### Declare Plugin in `vite.config.js`
 
@@ -29,11 +29,14 @@ Note that remark-frontmatter has some breaking changes after version 2; pin to t
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import mdx from 'vite-plugin-mdx'
 
+import remarkFrontmatter from 'remark-frontmatter';
+import { remarkMdxFrontmatter } from 'remark-mdx-frontmatter';
+
 const options = {
   remarkPlugins: [
     // plugin added!
-    require('remark-frontmatter'),
-    require('remark-mdx-frontmatter').remarkMdxFrontmatter,
+    remarkFrontmatter,
+    remarkMdxFrontmatter,
   ],
   rehypePlugins: [],
 }
