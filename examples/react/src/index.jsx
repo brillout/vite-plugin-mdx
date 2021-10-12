@@ -1,16 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import * as HelloStuff from './Hello.md'
-import "prismjs/themes/prism-tomorrow.css"
 
-const Hello = HelloStuff.default;
-
-console.log(HelloStuff);
+import App from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello />
+    <App />
   </React.StrictMode>,
   document.getElementById('react-root')
 )

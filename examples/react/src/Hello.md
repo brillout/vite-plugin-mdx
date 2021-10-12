@@ -15,17 +15,13 @@ Edit `Counter.jsx` or `Hello.md` and save to experience HMR updates.
 
 ## Plugin Support
 
-### Install `remark-prism`
+### Install `remark-frontmatter` and `remark-mdx-frontmatter`
 
 ```bash
-yarn add remark-prism
+yarn add remark-frontmatter@2^ remark-mdx-frontmatter
 ```
 
-### Include CSS
-
-```javascript
-import "prismjs/themes/prism-tomorrow.css"
-```
+Note that remark-frontmatter has some breaking changes after version 2; pin to that version.
 
 ### Declare Plugin in `vite.config.js`
 
@@ -36,8 +32,8 @@ import mdx from 'vite-plugin-mdx'
 const options = {
   remarkPlugins: [
     // plugin added!
-    require('remark-prism'),
-    require('remark-frontmatter')
+    require('remark-frontmatter'),
+    require('remark-mdx-frontmatter').remarkMdxFrontmatter,
   ],
   rehypePlugins: [],
 }
@@ -56,4 +52,10 @@ export default {
 
 ```javascript
 import Hello from './Hello.md'
+```
+
+- attributes defined in frontmatter are exposed through other module exports
+
+```javascript
+import Hello, { title, description } from './Hello.md'
 ```
