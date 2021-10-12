@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <p>
-        Here is some metadata extracted from the MDX file with <code>remark-frontmatter</code>
+        Here is some metadata extracted from the MDX file with <code>remark-frontmatter</code>{' '}
         and <code>remark-mdx-frontmatter</code>:
       </p>
       <dl>
