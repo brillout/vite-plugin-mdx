@@ -7,3 +7,10 @@ code {
   padding: 1px 3px;
   background: #eaeaea;
 }
+dt {
+  font-weight: bold;
+}
+
+dt:not(:first-child) {
+  margin-top: 6px;
+}
