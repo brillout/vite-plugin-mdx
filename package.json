@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-mdx",
-  "version": "3.5.8",
+  "version": "3.5.9",
   "scripts": {
     "// User Scripts": "",
     "dev": "yarn tsc:watch",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
-    "esbuild": "^0.8.31",
+    "esbuild": "^0.13.8",
     "resolve": "^1.20.0",
     "unified": "^9.2.1"
   },
