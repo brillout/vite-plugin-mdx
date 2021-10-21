@@ -1,4 +1,4 @@
-import { createTransformer, stopService } from './transform'
+import { createTransformer } from './transform'
 import { MdxOptions, MdxPlugin } from './types'
 import { viteMdxTransclusion } from './viteMdxTransclusion'
 import { NamedImports } from './imports'
@@ -63,9 +63,6 @@ function createPlugin(
         }
       }
     },
-    async closeBundle() {
-      await stopService()
-    }
   }
 
   return [
