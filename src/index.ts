@@ -38,6 +38,9 @@ function createPlugin(
     enforce: 'pre',
     mdxOptions: globalMdxOptions,
     configResolved({ root, plugins }) {
+      // @vitejs/plugin-react-refresh has been upgraded to @vitejs/plugin-react,
+      // and the name of the plugin performing `transform` has been changed from 'react-refresh' to 'vite:react-babel',
+      // to be compatible, we need to look for both plugin name.
       const reactRefresh = plugins.find(
         (p) => p.name === 'react-refresh' || p.name === 'vite:react-babel'
       )
