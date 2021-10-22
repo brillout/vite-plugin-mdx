@@ -1,3 +1,5 @@
+====================== [**WE ARE LOOKING FOR A NEW MAINTAINER**](https://github.com/brillout/vite-plugin-mdx/issues/42) ====================
+ 
 # Vite Plugin MDX
 
 Vite plugin to use MDX with your Vite app.
