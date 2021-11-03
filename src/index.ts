@@ -41,9 +41,12 @@ function createPlugin(
       // @vitejs/plugin-react-refresh has been upgraded to @vitejs/plugin-react,
       // and the name of the plugin performing `transform` has been changed from 'react-refresh' to 'vite:react-babel',
       // to be compatible, we need to look for both plugin name.
-      const reactRefresh = plugins.find(
+      // We should also look for the other plugins names exported from @vitejs/plugin-react in case there are some internal refactors.
+      const reactRefreshPlugins = plugins.filter(
         (p) => p.name === 'react-refresh' || p.name === 'vite:react-babel'
-      )
+          || p.name === 'vite:react-refresh' || p.name === 'vite:react-jsx'
+      );
+      const reactRefresh = reactRefreshPlugins.find(p => p.transform);
       const transform = createTransformer(root, namedImports)
 
       this.transform = async function (code, id, ssr) {
