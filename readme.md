@@ -1,12 +1,11 @@
 ====================== [**WE ARE LOOKING FOR A NEW MAINTAINER**](https://github.com/brillout/vite-plugin-mdx/issues/42) ====================
- 
+
 # Vite Plugin MDX
 
-Vite plugin to use MDX with your Vite app.
+Vite plugin to use MDX v1 with your Vite app. For MDX v2 use [`@mdx-js/rollup`](https://www.npmjs.com/package/@mdx-js/rollup) instead, [this comment](https://github.com/brillout/vite-plugin-mdx/issues/44#issuecomment-974540152) explains how to implement it.
 
 Features:
 
-- Works with MDX v1 and MDX v2.
 - Works with React and Preact.
 - Works with Vue [**[WIP]**](https://github.com/brillout/vite-plugin-mdx/issues/3).
 - HMR support.
