@@ -3,13 +3,13 @@
   "version": "3.5.10",
   "scripts": {
     "// User Scripts": "",
-    "dev": "yarn tsc:watch",
-    "build": "yarn install && yarn tsc:once",
+    "dev": "pnpm run tsc:watch",
+    "build": "pnpm run tsc:once",
     "// TypeScript": "",
     "tsc:watch": "tsc --build --watch",
     "tsc:once": "tsc --build",
     "// Release": "",
-    "prepublishOnly": "yarn clean && yarn install && yarn tsc:once",
+    "prepublishOnly": "pnpm run build",
     "// Remove caches": "",
     "clean": "git clean -Xdff"
   },
