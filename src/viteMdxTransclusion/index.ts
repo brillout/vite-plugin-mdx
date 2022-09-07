@@ -36,12 +36,12 @@ export function viteMdxTransclusion(
    */
   let astCache: MdxAstCache
 
-  return {
+  const plugin = {
     name: 'mdx:transclusion',
     configResolved({ root, logger }) {
       let watcher: FSWatcher | undefined
 
-      this.configureServer = (server) => {
+      plugin.configureServer = (server) => {
         watcher = server.watcher
         importMap = new ImportMap()
         astCache = new LRUCache({
@@ -67,7 +67,7 @@ export function viteMdxTransclusion(
         })
       }
 
-      this.buildStart = function () {
+      plugin.buildStart = function () {
         globalMdxOptions.remarkPlugins.push(
           remarkTransclusion({
             astCache,
@@ -98,4 +98,5 @@ export function viteMdxTransclusion(
       }
     }
   }
+  return plugin
 }

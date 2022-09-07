@@ -49,7 +49,7 @@ function createPlugin(
       const reactRefresh = reactRefreshPlugins.find(p => p.transform);
       const transform = createTransformer(root, namedImports)
 
-      this.transform = async function (code, id, ssr) {
+      mdxPlugin.transform = async function (code, id, ssr) {
         if (/\.mdx?$/.test(id)) {
           const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
           mdxOptions.filepath = id
