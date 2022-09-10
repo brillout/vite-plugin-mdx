@@ -82,7 +82,10 @@ function findMdxImports(ast: import('mdast').Root) {
   ast.children.forEach((node: Node, index) => {
     // "import" type is used by @mdx-js/mdx@2.0.0-next.8 and under
     if (node.type === 'mdxjsEsm' || node.type === 'import') {
-      const id = importRE.exec(node.value as string)?.[1]
+      // mdx ast nodes indeed have a value prop:
+      // https://github.com/mdx-js/specification#import
+      // but @types/unist doesn't declare it
+      const id = importRE.exec((node as any).value as string)?.[1]
       if (id && mdxRE.test(id)) {
         imports.push({ id, node, index })
       }
