@@ -10,6 +10,7 @@
     "tsc:once": "tsc --build",
     "// Release": "",
     "prepublishOnly": "pnpm run build",
+    "release": "npm version patch && npm publish && git push && git push --tags",
     "// Remove caches": "",
     "clean": "git clean -Xdff"
   },
