@@ -36,7 +36,7 @@ export function viteMdxTransclusion(
    */
   let astCache: MdxAstCache
 
-  const plugin = {
+  const plugin: Plugin = {
     name: 'mdx:transclusion',
     configResolved({ root, logger }) {
       let watcher: FSWatcher | undefined
