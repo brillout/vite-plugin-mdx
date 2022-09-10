@@ -1,4 +1,4 @@
-import { FSWatcher, normalizePath, Plugin } from 'vite'
+import { FSWatcher, normalizePath, Plugin, ResolvedConfig } from 'vite'
 import LRUCache from '@alloc/quick-lru'
 import { isAbsolute } from 'path'
 import fs from 'fs'
@@ -36,66 +36,72 @@ export function viteMdxTransclusion(
    */
   let astCache: MdxAstCache
 
+  let resolvedConfig: ResolvedConfig | undefined
+  let watcher: FSWatcher | undefined
+
   const plugin: Plugin = {
     name: 'mdx:transclusion',
-    configResolved({ root, logger }) {
-      let watcher: FSWatcher | undefined
+    configResolved(config) {
+      resolvedConfig = config
+    },
+    configureServer(server) {
+      watcher = server.watcher
+      importMap = new ImportMap()
+      astCache = new LRUCache({
+        maxAge: 30 * 6e4, // 30 minutes
+        maxSize: 100
+      })
 
-      plugin.configureServer = (server) => {
-        watcher = server.watcher
-        importMap = new ImportMap()
-        astCache = new LRUCache({
-          maxAge: 30 * 6e4, // 30 minutes
-          maxSize: 100
-        })
-
-        // When a transcluded file changes, recompile its importers.
-        // Also, clean up the import map when an importer is deleted.
-        watcher.on('all', (event, filePath) => {
-          if (/\.mdx?$/.test(filePath)) {
-            if (event === 'unlink') {
-              importMap.deleteImporter(filePath)
-            }
-            const importers = importMap.importers.get(filePath)
-            if (importers) {
-              astCache.delete(filePath)
-              importers.forEach((importer) => {
-                watcher!.emit('change', importer)
-              })
-            }
+      // When a transcluded file changes, recompile its importers.
+      // Also, clean up the import map when an importer is deleted.
+      watcher.on('all', (event, filePath) => {
+        if (/\.mdx?$/.test(filePath)) {
+          if (event === 'unlink') {
+            importMap.deleteImporter(filePath)
           }
-        })
-      }
-
-      plugin.buildStart = function () {
-        globalMdxOptions.remarkPlugins.push(
-          remarkTransclusion({
-            astCache,
-            importMap,
-            resolve: async (id, importer) => {
-              const resolved = await this.resolve(id, importer)
-              if (resolved) {
-                id = normalizePath(resolved.id)
-                // Ensure files outside the Vite project root are watched.
-                if (watcher && isAbsolute(id) && !id.startsWith(root + '/')) {
-                  watcher.add(id)
-                }
-                return id
-              }
-              logger.warn(`Failed to resolve "${id}" imported by "${importer}"`)
-            },
-            readFile: (filePath) => fs.promises.readFile(filePath, 'utf8'),
-            getCompiler: (filePath) =>
-              createMdxAstCompiler(
-                root,
-                mergeArrays(
-                  globalMdxOptions.remarkPlugins,
-                  getMdxOptions?.(filePath).remarkPlugins
-                )
-              )
-          })
+          const importers = importMap.importers.get(filePath)
+          if (importers) {
+            astCache.delete(filePath)
+            importers.forEach((importer) => {
+              watcher!.emit('change', importer)
+            })
+          }
+        }
+      })
+    },
+    buildStart() {
+      if (!resolvedConfig)
+        throw new Error(
+          'vite-plugin-mdx: configResolved hook should be called before calling buildStart hook'
         )
-      }
+      const { root, logger } = resolvedConfig
+      globalMdxOptions.remarkPlugins.push(
+        remarkTransclusion({
+          astCache,
+          importMap,
+          resolve: async (id, importer) => {
+            const resolved = await this.resolve(id, importer)
+            if (resolved) {
+              id = normalizePath(resolved.id)
+              // Ensure files outside the Vite project root are watched.
+              if (watcher && isAbsolute(id) && !id.startsWith(root + '/')) {
+                watcher.add(id)
+              }
+              return id
+            }
+            logger.warn(`Failed to resolve "${id}" imported by "${importer}"`)
+          },
+          readFile: (filePath) => fs.promises.readFile(filePath, 'utf8'),
+          getCompiler: (filePath) =>
+            createMdxAstCompiler(
+              root,
+              mergeArrays(
+                globalMdxOptions.remarkPlugins,
+                getMdxOptions?.(filePath).remarkPlugins
+              )
+            )
+        })
+      )
     }
   }
   return plugin
