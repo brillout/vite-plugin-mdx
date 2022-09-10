@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-mdx",
-  "version": "3.5.10",
+  "version": "3.5.11",
   "scripts": {
     "// User Scripts": "",
     "dev": "pnpm run tsc:watch",
