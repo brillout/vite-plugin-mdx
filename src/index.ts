@@ -1,3 +1,4 @@
+import type { Plugin } from 'vite';
 import { createTransformer } from './transform'
 import { MdxOptions, MdxPlugin } from './types'
 import { viteMdxTransclusion } from './viteMdxTransclusion'
@@ -32,6 +33,14 @@ function createPlugin(
   globalMdxOptions.remarkPlugins ??= []
   globalMdxOptions.rehypePlugins ??= []
 
+  let reactRefresh: Plugin | undefined
+  let transformMdx:
+    | ((
+        code_mdx: string,
+        mdxOptions?: MdxOptions | undefined
+      ) => Promise<string>)
+    | undefined
+
   const mdxPlugin: MdxPlugin = {
     name: 'vite-plugin-mdx',
     // I can't think of any reason why a plugin would need to run before mdx; let's make sure `vite-plugin-mdx` runs first.
@@ -46,29 +55,33 @@ function createPlugin(
         (p) => p.name === 'react-refresh' || p.name === 'vite:react-babel'
           || p.name === 'vite:react-refresh' || p.name === 'vite:react-jsx'
       );
-      const reactRefresh = reactRefreshPlugins.find(p => p.transform);
-      const transform = createTransformer(root, namedImports)
+      reactRefresh = reactRefreshPlugins.find(p => p.transform);
+      transformMdx = createTransformer(root, namedImports)
+    },
+    async transform (code, id, ssr) {
+      if (/\.mdx?$/.test(id)) {
+        if (!transformMdx)
+          throw new Error(
+            'vite-plugin-mdx: configResolved hook should be called before calling transform hook'
+          )
+        
+        const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
+        mdxOptions.filepath = id
 
-      mdxPlugin.transform = async function (code, id, ssr) {
-        if (/\.mdx?$/.test(id)) {
-          const mdxOptions = mergeOptions(globalMdxOptions, getMdxOptions?.(id))
-          mdxOptions.filepath = id
+        code = await transformMdx(code, mdxOptions)
+        const refreshResult = await reactRefresh?.transform!.call(
+          this,
+          code,
+          id + '.js',
+          ssr
+        )
 
-          code = await transform(code, mdxOptions)
-          const refreshResult = await reactRefresh?.transform!.call(
-            this,
+        return (
+          refreshResult || {
             code,
-            id + '.js',
-            ssr
-          )
-
-          return (
-            refreshResult || {
-              code,
-              map: { mappings: '' }
-            }
-          )
-        }
+            map: { mappings: '' }
+          }
+        )
       }
     }
   }
