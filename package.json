@@ -19,8 +19,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@mdx-js/mdx": "*",
-    "vite": "*"
+    "@mdx-js/mdx": "<2",
+    "vite": "<3"
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",

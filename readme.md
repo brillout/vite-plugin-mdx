@@ -2,7 +2,7 @@
 
 # Vite Plugin MDX
 
-Vite plugin to use MDX v1 with your Vite app. For MDX v2 use [`@mdx-js/rollup`](https://www.npmjs.com/package/@mdx-js/rollup) instead, [this comment](https://github.com/brillout/vite-plugin-mdx/issues/44#issuecomment-974540152) explains how to implement it.
+Use this Vite plugin to use MDX v1 with your Vite v2 app. For Vite v3+ we recommend migrating to MDX v2 using the official [`@mdx-js/rollup`](https://www.npmjs.com/package/@mdx-js/rollup), [this comment](https://github.com/brillout/vite-plugin-mdx/issues/44#issuecomment-974540152) explains how to implement it.
 
 Features:
 
