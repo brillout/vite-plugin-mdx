@@ -24,10 +24,6 @@ Features:
       ```sh
       npm install @mdx-js/mdx
       ```
-      Or MDX v2:
-      ```sh
-      npm install @mdx-js/mdx@next
-      ```
    3. MDX React:
       ```sh
       npm install @mdx-js/react
