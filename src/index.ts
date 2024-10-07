@@ -72,7 +72,7 @@ function createPlugin(
         const refreshResult = await reactRefresh?.transform!.call(
           this,
           code,
-          id + '.js',
+          id + '.jsx',
           ssr
         )
 
